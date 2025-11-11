@@ -18,16 +18,16 @@
             @csrf
             <div class="mb-3">
                 <label for="id" class="form-label">Code</label>
-                <input type="text" class="form-control" id="id" aria-describedby="idHelp" disabled="disable">
+                <input type="text" class="form-control" id="id" aria-describedby="idHelp" name="id" disabled>
                 <div id="idhelp" class="form-text">Commune code.</div>
             </div>
             <div class="mb-3">
                 <label for="name" class="form-label">Commune</label>
-                <input type="text" class="form-control" id="name" placeholder="Comuna name">
+                <input type="text" class="form-control" id="name" name="name" placeholder="Comuna name" required>
             </div>
             <div class="mb-3">
                 <label for="municipality" class="form-label">Municipaly</label>
-                <select class="form-select" name="code" id="municipality" required>
+                <select class="form-select" name="muni_codi" id="municipality" required>
                     <option selected disabled value="">choose one...</option>
                     @foreach ($municipios as $municipio)
                         <option value="{{$municipio->muni_codi}}">{{$municipio->muni_nomb}}</option>

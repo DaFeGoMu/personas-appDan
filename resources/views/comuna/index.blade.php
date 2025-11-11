@@ -27,7 +27,7 @@
             <tbody>
                 @foreach ($comunas as $comuna)
                 <tr>
-                    <th scope="row">{{$comuna->comu_codi}}</th>
+                    <td scope="row">{{$comuna->comu_codi}}</td>
                     <td>{{$comuna->comu_nomb}}</td>
                     <td>{{$comuna->muni_nomb}}</td>
                     <td>

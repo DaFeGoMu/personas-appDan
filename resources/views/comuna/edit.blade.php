@@ -24,12 +24,12 @@
         </div>
         <div class="mb-3">
             <label for="name" class="form-label">Commune</label>
-            <input type="text" required class="form-control" id="name" placeholder="Commune name"
+            <input type="text" required class="form-control" id="comu_nomb" placeholder="Commune name"
             name="name" value="{{ $comuna->comu_nomb}}">
         </div>
 
         <label for="municipality">Municipality:</label>
-        <select class="form-select" id="municipality" name="code" required>
+        <select class="form-select" id="municipality" name="muni_codi" required>
             <option selected disabled value="">Choose one...</option>
             @foreach ($municipios as $municipio)
                 @if ($municipio->muni_codi == $comuna->muni_codi)
