@@ -78,7 +78,11 @@ class ComunaController extends Controller
      */
     public function edit($id)
     {
-        //
+        $comuna = Comuna::find($id);
+        $municipios = DB::table('tb_municipio')
+                ->orderBy('muni_nomb')
+                ->get();
+        return view('comuna.edit', ['comuna'=> $comuna,'municipios'=> $municipios]);
     }
 
     /**
