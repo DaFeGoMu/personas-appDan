@@ -4,6 +4,8 @@ use App\Http\Controllers\MunicipioController;
 use App\Http\Controllers\ComunaController;
 use App\Http\Controllers\DepartamentoController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PaisController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,3 +25,4 @@ Route::resource('comunas', ComunaController::class);
 Route::resource('municipios', MunicipioController::class);
 Route::resource('departamentos', DepartamentoController::class);
 //Route::get('/comunas', [ComunaController::class, 'index']);
+Route::resource('paises', PaisController::class);
