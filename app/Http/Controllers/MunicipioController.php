@@ -15,8 +15,8 @@ class MunicipioController extends Controller
      */
     public function index()
     {
-        $municipios = Municipio::all();
-        return view('municipio.index', ['municipios' => $municipios]);
+        $municipios = Municipio::paginate(5);
+        return view('municipio.index', compact('municipios'));
     }
 
     /**
@@ -26,7 +26,10 @@ class MunicipioController extends Controller
      */
     public function create()
     {
-        return view('municipio.new');
+        $departamentos = DB::table('tb_departamento')
+            ->orderBy('depa_nomb')
+            ->get();
+        return view('municipio.new', ['departamentos' => $departamentos]);
     }
 
     /**
@@ -38,10 +41,12 @@ class MunicipioController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:tb_municipio,muni_nomb', // Asumiendo que el nombre del campo es 'name'
+            'depa_codi' => 'required|integer|exists:tb_departamento,depa_codi',
         ]);
 
         $municipio = new Municipio();
+        $municipio->depa_codi = $request->depa_codi;
         $municipio->muni_nomb = $request->name;
         $municipio->save();
 
@@ -65,10 +70,12 @@ class MunicipioController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Municipio $municipio)
     {
-        $municipio = Municipio::find($id);
-        return view('municipio.edit', ['municipio' => $municipio]);
+        $departamentos = DB::table('tb_departamento')
+            ->orderBy('depa_nomb')
+            ->get();
+        return view('municipio.edit', compact('municipio', 'departamentos'));
     }
 
     /**
@@ -78,13 +85,14 @@ class MunicipioController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Municipio $municipio)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:tb_municipio,muni_nomb,'.$municipio->muni_codi.',muni_codi', // Asumiendo que el nombre del campo es 'name'
+            'depa_codi' => 'required|integer|exists:tb_departamento,depa_codi',
         ]);
 
-        $municipio = Municipio::find($id);
+        $municipio->depa_codi = $request->depa_codi;
         $municipio->muni_nomb = $request->name;
         $municipio->save();
 
@@ -97,10 +105,9 @@ class MunicipioController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Municipio $municipio)
     {
         try {
-            $municipio = Municipio::find($id);
             $municipio->delete();
             return redirect()->route('municipios.index')->with('success', 'Municipio eliminado exitosamente.');
         } catch (\Illuminate\Database\QueryException $e) {
