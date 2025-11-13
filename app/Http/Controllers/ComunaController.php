@@ -16,13 +16,15 @@ class ComunaController extends Controller
     public function index()
     {
         //$comunas = Comuna::all();
-
+        // Cambiamos el método get() por paginate() para obtener resultados paginados
         $comunas = DB::table('tb_comuna')
-                ->join('tb_municipio','tb_comuna.muni_codi','tb_municipio.muni_codi')
-                ->select('tb_comuna.*', "tb_municipio.muni_nomb")
-                ->get();
+        ->join('tb_municipio', 'tb_comuna.muni_codi', '=', 'tb_municipio.muni_codi')
+        ->select('tb_comuna.*', 'tb_municipio.muni_nomb')
+        ->paginate(10); // Puedes ajustar el número de ítems por página (ej. 10)
+
         return view('comuna.index', ['comunas' => $comunas]);
     }
+    
 
     /**
      * Show the form for creating a new resource.

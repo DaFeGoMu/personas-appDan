@@ -1,46 +1,40 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.app')
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+@section('content')
+<div class="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-md">
+    <h1 class="text-2xl font-bold mb-6">Agregar Nuevo Departamento</h1>
 
-    <title>Add Department</title>
-  </head>
-  <body>
-    <div class="container">
-        <h1>Add Department</h1>
-        <form method="POST" action="{{ route('departamentos.store') }}">
-            @csrf
-            <div class="mb-3">
-                <label for="name" class="form-label">Department</label>
-                <input type="text" required class="form-control" id="name" placeholder="Department name" name="name" value="{{ old('name') }}">
-            </div>
-            @error('name')
-                <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
-            <div class="mb-3">
-                <label for="pais" class="form-label">País</label>
-                <select class="form-select" id="pais" name="pais_codi" required>
-                    <option selected disabled value="">Elegir...</option>
-                    @foreach ($paises as $pais)
-                        <option value="{{ $pais->pais_codi }}">{{ $pais->pais_nomb }}</option>
-                    @endforeach
-                </select>
-                @error('pais_codi')
-                    <div class="alert alert-danger mt-1">{{ $message }}</div>
-                @enderror
-            </div>
-            <div class="mt-3">
-                <button type="submit" class="btn btn-primary">Save</button>
-                <a href="{{ route('departamentos.index') }}" class="btn btn-warning">Cancel</a> 
-            </div>
-        </form>
-    </div>
+    @if ($errors->any())
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-  </body>
-</html>
+    <form action="{{ route('departamentos.store') }}" method="POST">
+        @csrf
+        <div class="mb-4">
+            <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Nombre del Departamento:</label>
+            <input type="text" id="name" name="name" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required value="{{ old('name') }}">
+        </div>
+
+        <div class="mb-6">
+            <label for="country" class="block text-gray-700 text-sm font-bold mb-2">País:</label>
+            <select id="country" name="code" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                <option value="" disabled selected>Selecciona un país</option>
+                @foreach ($paises as $pais)
+                    <option value="{{ $pais->pais_codi }}">{{ $pais->pais_nomb }}</option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="flex items-center justify-between">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Guardar</button>
+            <a href="{{ route('departamentos.index') }}" class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">Cancelar</a>
+        </div>
+    </form>
+</div>
+@endsection
